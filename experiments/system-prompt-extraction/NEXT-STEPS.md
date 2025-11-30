@@ -1,17 +1,21 @@
 # System Prompt Slimming - Handoff Document
 
 ## Goal
-Reduce Claude Code's system prompt by ~45% (currently at 11%, need ~34% more).
+Reduce Claude Code's system prompt by ~45%. Currently at ~23% reduction (12KB saved).
 
 ## Current Progress
 
 ### What's Been Done
 - **Backup/restore system**: `backup-cli.sh` and `restore-cli.sh` with SHA256 verification
 - **Patch system**: `patch-cli.js` that restores from backup then applies patches (idempotent)
-- **3 patches applied**, saving 11.3% (~6KB, 107 lines):
+- **7 patches applied**, saving ~23% (~12KB):
   1. Removed duplicate emoji instruction from Edit tool
   2. Removed duplicate emoji instruction from Write tool
   3. Slimmed TodoWrite examples from 8 verbose to 2 concise
+  4. Slimmed EnterPlanMode examples from 6 to 2
+  5. Simplified git commit section (3.8KB to 0.6KB)
+  6. Simplified PR creation section (2.2KB to 0.4KB)
+  7. Removed Code References section (363 bytes)
 
 ### What Worked
 - **File-based patches**: Large find/replace strings stored in `patches/*.find.txt` and `patches/*.replace.txt`
@@ -22,49 +26,21 @@ Reduce Claude Code's system prompt by ~45% (currently at 11%, need ~34% more).
 - **Template literals for large strings**: Embedding 6KB strings in JS template literals caused matching issues (whitespace/encoding differences)
 - **Solution**: Load large patches from external `.txt` files instead
 
-## Remaining Tasks (~34% more savings needed)
+## Remaining Tasks (~22% more savings needed)
 
-### 1. EnterPlanMode examples (~73 lines, ~9%)
-Current location in extracted prompt: lines 743-816
-- Has 6 examples (3 "good", 3 "bad")
-- Reduce to 2 examples (1 good, 1 bad)
+All major simplifications have been done. To get closer to 45%, consider:
 
-To create this patch:
-```bash
-# Extract the section from backup
-node -e "
-const fs = require('fs');
-const content = fs.readFileSync('$HOME/.claude/local/node_modules/@anthropic-ai/claude-code/cli.js.backup', 'utf8');
-const start = content.indexOf('## When to Use This Tool');
-const end = content.indexOf('## Important Notes');
-// Find the examples subsection and save to file
-"
-```
+### 1. Tool descriptions (~15-20%)
+The tool descriptions (Bash, Glob, Grep, Read, Edit, Write, etc.) are verbose. Each could be condensed.
 
-### 2. Parallel tools repetition (~25 lines, ~3%)
-The phrase "You can call multiple tools in a single response" appears 6 times. Keep the main one in Tool Usage Policy, remove from:
-- Git commit section (lines 158, 167)
-- PR creation section (lines 199, 205)
-- Glob tool section (line 368)
+### 2. AskUserQuestion tool (~2%)
+Has detailed usage notes that could be simplified.
 
-These are small inline patches - add directly to `patch-cli.js`.
+### 3. Task/Agent tool (~3%)
+Has extensive examples and agent type descriptions.
 
-### 3. Code References section (~12 lines, ~1.5%)
-Remove entirely - lines 232-239 in extracted prompt. The model naturally does this.
-
-Find: `# Code References\n\nWhen referencing...` through the example.
-Replace: empty string
-
-### 4. Git commit section simplification (~30 lines, ~4%)
-Current section has step-by-step hand-holding. Keep:
-- Safety rules (never force push, etc.)
-- HEREDOC format example
-Remove:
-- Verbose step numbering
-- Repeated "call multiple tools" instructions
-
-### 5. PR creation section simplification (~20 lines, ~2.5%)
-Similar to git commit - keep format template, remove verbose steps.
+### 4. Further git/PR simplification
+The simplified versions could be made even more terse if needed.
 
 ## How to Add a New Patch
 
@@ -139,6 +115,7 @@ experiments/system-prompt-extraction/
 
 ## Key Numbers
 - Original prompt: 830 lines, 52,590 chars
-- Current (after 3 patches): 723 lines, 46,615 chars
+- Current (after 7 patches): ~640 lines, ~40,700 chars
+- Savings: 11,900 bytes (~23% of system prompt)
 - Target (~45% reduction): ~457 lines, ~29,000 chars
-- Still need to save: ~266 lines, ~17,600 chars
+- Still need to save: ~11,700 chars (~22% more)
