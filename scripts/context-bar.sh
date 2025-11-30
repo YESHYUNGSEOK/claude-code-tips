@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Claude Code status line script
-# Shows: Opus 4.5 | 📁 Daft | 🔀 main (2 files uncommitted) | ████░░░░░░ 42% of 200k tokens used
+# Shows: Opus 4.5 | 📁 Daft | 🔀 main (2 files uncommitted) | ████▄░░░░░ 45% of 200k tokens used
 
 input=$(cat)
 
