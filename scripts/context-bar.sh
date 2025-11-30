@@ -6,8 +6,8 @@
 # Context calculation:
 # - 200k total context window
 # - 45k reserved for autocompact buffer (disable via /config if needed)
-# - 18k baseline for system prompt, tools, and memory
-# - 155k effectively available, 137k free at conversation start
+# - 20k baseline for system prompt, tools, memory, and dynamic context
+# - 155k effectively available, 135k free at conversation start
 
 input=$(cat)
 
@@ -73,8 +73,10 @@ if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
 
     # 155k available (200k minus 45k autocompact buffer)
     max_context=155000
-    # 18k baseline for system prompt, tools, memory
-    baseline=18000
+    # 20k baseline: includes system prompt (~3k), tools (~15k), memory (~300),
+    # plus ~2k for git status, env block, XML framing, and other dynamic context
+    # not shown in /context breakdown but sent to the API
+    baseline=20000
     bar_width=10
 
     if [[ "$context_length" -gt 0 ]]; then
@@ -101,7 +103,7 @@ if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
 
     ctx="${bar} ${pct}% of 155k tokens used (/context)"
 else
-    ctx="█░░░░░░░░░ 11% of 155k tokens used (/context)"
+    ctx="█▄░░░░░░░░ 13% of 155k tokens used (/context)"
 fi
 
 # Build output: Model | Dir | Branch (uncommitted) | Context
