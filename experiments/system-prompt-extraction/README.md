@@ -5,7 +5,7 @@ Extracts the system prompt from the Claude Code CLI bundle.
 ## Files
 
 - `extract-system-prompt.js` - Node.js script to extract the prompt
-- `system-prompt.txt` - Extracted system prompt (~52KB, ~830 lines)
+- `system-prompt.md` - Extracted system prompt (~52KB, ~830 lines)
 
 ## Results
 
