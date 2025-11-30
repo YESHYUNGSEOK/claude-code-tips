@@ -34,7 +34,7 @@ system-prompt/
 ├── restore-cli.sh             # Restores from backup
 ├── patch-cli.js               # Applies all patches (idempotent)
 ├── extract-system-prompt.js   # Extracts prompt for verification
-├── patches/                   # 34 patch files (17 find/replace pairs)
+├── patches/                   # 38 patch files (19 find/replace pairs)
 ├── system-prompt.md           # Original extracted prompt (reference)
 └── README.md
 ```

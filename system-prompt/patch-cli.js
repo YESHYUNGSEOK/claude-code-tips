@@ -81,6 +81,10 @@ assistant: Clients are marked as failed in the \\\`connectToServer\\\` function 
   { name: 'Slim Read tool intro (292 → 110 chars)', file: 'read-tool' },
   // Round 4 - Dynamic content optimization
   { name: 'Remove allowed tools list from prompt (saves 5-10KB+)', file: 'allowed-tools' },
+  // Round 5 - Final cleanup
+  { name: 'Slim over-engineering bullets (~900 chars → 200)', file: 'over-engineering' },
+  { name: 'Slim documentation lookup section (~600 chars → 150)', file: 'documentation-lookup' },
+  { name: 'Remove tool usage policy examples (~400 chars)', file: 'tool-usage-examples' },
 ];
 
 // Helper: compute SHA256 hash
