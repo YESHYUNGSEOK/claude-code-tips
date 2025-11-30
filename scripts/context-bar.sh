@@ -55,8 +55,8 @@ else
 fi
 
 # Build output: Model | Dir | Branch | Context
-output="${model} | 📁 ${dir}"
-[[ -n "$branch" ]] && output+=" | 🔀 ${branch}"
+output="${model} | 📁${dir}"
+[[ -n "$branch" ]] && output+=" | 🔀${branch}"
 output+=" | ${ctx}"
 
 echo "$output"
