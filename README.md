@@ -177,7 +177,31 @@ sleep 30  # wait for response (adjust as needed, up to 90s for complex searches)
 tmux capture-pane -t <session_name> -p -S -500  # capture output
 ```
 
-If you capture the pane and only see your own message with no response, you forgot to send Enter. Run `tmux send-keys -t <session_name> Enter` to submit.
+## How to tell if Enter was sent
+
+Look for YOUR QUERY TEXT specifically. Is it inside or outside the bordered box?
+
+**Enter NOT sent** - your query is INSIDE the box:
+```
+╭─────────────────────────────────────╮
+│ > Your actual query text here       │
+╰─────────────────────────────────────╯
+```
+
+**Enter WAS sent** - your query is OUTSIDE the box, followed by activity:
+```
+> Your actual query text here
+
+⠋ Our hamsters are working... (processing)
+
+╭────────────────────────────────────────────╮
+│ >   Type your message or @path/to/file     │
+╰────────────────────────────────────────────╯
+```
+
+Note: The empty prompt `Type your message or @path/to/file` always appears in the box - that's normal. What matters is whether YOUR query text is inside or outside the box.
+
+If your query is inside the box, run `tmux send-keys -t <session_name> Enter` to submit.
 
 ## Cleanup when done
 
