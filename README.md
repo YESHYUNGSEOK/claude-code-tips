@@ -233,7 +233,9 @@ This is still experimental - I'm testing it across different types of tasks to m
 
 Check out the [system-prompt folder](system-prompt/2.0.56/) for the patch scripts and full details on what gets trimmed.
 
-**Important**: If you want to keep your patched system prompt, disable auto-updates by adding `export DISABLE_AUTOUPDATER=1` to your shell config (e.g., `~/.zshrc`). Otherwise Claude Code will auto-update and overwrite your patches. You can manually update later with `claude update` when you're ready to re-apply patches to a new version.
+**Requirements**: These patches only work if you installed Claude Code via npm (`npm install -g @anthropic-ai/claude-code`). Other installation methods (like the standalone installer) put the CLI in different locations that these scripts don't support.
+
+**Important**: If you want to keep your patched system prompt, disable auto-updates by adding `export DISABLE_AUTOUPDATER=1` to your shell config (e.g., `~/.zshrc`). Otherwise Claude Code will auto-update and overwrite your patches. You can manually update later with `npm update -g @anthropic-ai/claude-code` when you're ready to re-apply patches to a new version.
 
 ## Tip 13: Git worktrees for parallel branch work
 
