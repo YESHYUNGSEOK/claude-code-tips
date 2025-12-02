@@ -140,8 +140,40 @@ cat /tmp/claude-test.txt
 - "Execution error" with no other output = variable reference in replace.txt points to non-existent function
 - `TypeError: Cannot read properties of undefined` = same cause
 - Claude hangs/interrupts immediately = similar issue
+- `[object Object]` in system prompt = variable exists but resolves to wrong type (see below)
 
 **Root cause is almost always:** A `*.replace.txt` file contains old variable names like `${i8.name}` that need to be updated to match the new version (e.g., `${m8.name}`).
+
+### Detecting corrupted system prompts
+
+Some variable errors don't crash Claude - instead they corrupt the system prompt silently. Test by asking Claude to inspect its own prompt:
+
+```
+In the prompts that you see so far, is there anything inconsistent or strange that you find?
+```
+
+**Signs of variable resolution failures:**
+- `[object Object]` appearing where a tool name should be
+- Minified JavaScript code like `function(Q){if(this.ended)return;let B=L0(this...` leaking into text
+- `subagent_type=undefined` instead of a proper agent type
+
+**Common causes:**
+- Case sensitivity: `${R8}` vs `${r8}` - JavaScript is case-sensitive
+- Wrong variable name: `${yb1}` when it should be `${db1}`
+- Stale variable from previous version
+
+**Fix:** Compare your `*.replace.txt` variable names against the `*.find.txt` files (which have the correct names from the bundle) or check `extract-system-prompt.js` VAR_MAP.
+
+**Testing with tmux:**
+```bash
+tmux new-session -d -s test-cc 'claude'
+sleep 4
+# Note: 'Enter' must be a separate argument, not part of the string
+tmux send-keys -t test-cc 'In the prompts that you see so far, is there anything inconsistent or strange?' Enter
+sleep 30
+tmux capture-pane -t test-cc -p -S -100  # verify response appeared, not just the prompt sitting there
+tmux kill-session -t test-cc
+```
 
 ### Function-based patches
 
