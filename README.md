@@ -251,6 +251,8 @@ When waiting on long-running jobs like GitHub CI, you can ask Claude Code to do 
 
 This way the agent can continuously check the status and let you know once it's done.
 
+(For GitHub CI specifically, `gh run watch` is a simpler option. But this technique works when you don't have a dedicated wait command handy.)
+
 For example, if you have a workflow run you're waiting on:
 
 > Let's do manual exponential backoff - wait 30 seconds, then a minute, two minutes, and so on until it finishes.
