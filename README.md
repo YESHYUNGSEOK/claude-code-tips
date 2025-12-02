@@ -225,13 +225,13 @@ Here's what `/context` looks like before and after patching:
 
 | Unpatched (18k, 9%) | Patched (11k, 5%) |
 |---------------------|-------------------|
-| ![Unpatched context](system-prompt/2.0.55/context-unpatched.png) | ![Patched context](system-prompt/2.0.55/context-patched.png) |
+| ![Unpatched context](system-prompt/2.0.56/context-unpatched.png) | ![Patched context](system-prompt/2.0.56/context-patched.png) |
 
 The patches work by trimming verbose examples and redundant text from the minified CLI bundle while keeping all the essential instructions. For example, the TodoWrite examples go from 6KB to 0.4KB, and the Bash tool description drops from 3.7KB to 0.6KB.
 
 This is still experimental - I'm testing it across different types of tasks to make sure nothing important is lost. But so far it's been working well, and the output quality seems to have improved somewhat (probably because there's less noise in the context).
 
-Check out the [system-prompt folder](system-prompt/2.0.55/) for the patch scripts and full details on what gets trimmed.
+Check out the [system-prompt folder](system-prompt/2.0.56/) for the patch scripts and full details on what gets trimmed.
 
 **Important**: If you want to keep your patched system prompt, disable auto-updates by adding `export DISABLE_AUTOUPDATER=1` to your shell config (e.g., `~/.zshrc`). Otherwise Claude Code will auto-update and overwrite your patches. You can manually update later with `claude update` when you're ready to re-apply patches to a new version.
 
