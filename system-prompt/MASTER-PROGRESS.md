@@ -6,24 +6,24 @@ Tracking extraction and analysis of Claude Code system prompts across versions.
 
 Every 20th version from most recent, providing coverage across all major series.
 
-| # | Version | Series | Lines | Status |
-|---|---------|--------|-------|--------|
-| 1 | 2.0.57 | 2.0.x | 1226 | Complete |
-| 2 | 2.0.33 | 2.0.x | - | Not started |
-| 3 | 2.0.12 | 2.0.x | - | Not started |
-| 4 | 1.0.117 | 1.0.x | - | Not started |
-| 5 | 1.0.93 | 1.0.x | - | Not started |
-| 6 | 1.0.72 | 1.0.x | - | Not started |
-| 7 | 1.0.52 | 1.0.x | - | Not started |
-| 8 | 1.0.32 | 1.0.x | - | Not started |
-| 9 | 1.0.10 | 1.0.x | - | Not started |
-| 10 | 0.2.116 | 0.2.x | - | Not started |
-| 11 | 0.2.92 | 0.2.x | - | Not started |
-| 12 | 0.2.67 | 0.2.x | - | Not started |
-| 13 | 0.2.45 | 0.2.x | - | Not started |
-| 14 | 0.2.18 | 0.2.x | - | Not started |
+| # | Version | Series | Model | Lines | Status |
+|---|---------|--------|-------|-------|--------|
+| 1 | 2.0.57 | 2.0.x | Opus 4.5 | 1226 | Complete |
+| 2 | 2.0.33 | 2.0.x | Sonnet 4.5 | 551 | Complete |
+| 3 | 2.0.12 | 2.0.x | - | - | Not started |
+| 4 | 1.0.117 | 1.0.x | - | - | Not started |
+| 5 | 1.0.93 | 1.0.x | - | - | Not started |
+| 6 | 1.0.72 | 1.0.x | - | - | Not started |
+| 7 | 1.0.52 | 1.0.x | - | - | Not started |
+| 8 | 1.0.32 | 1.0.x | - | - | Not started |
+| 9 | 1.0.10 | 1.0.x | - | - | Not started |
+| 10 | 0.2.116 | 0.2.x | - | - | Not started |
+| 11 | 0.2.92 | 0.2.x | - | - | Not started |
+| 12 | 0.2.67 | 0.2.x | - | - | Not started |
+| 13 | 0.2.45 | 0.2.x | - | - | Not started |
+| 14 | 0.2.18 | 0.2.x | - | - | Not started |
 
-**Progress**: 1/14 complete
+**Progress**: 2/14 complete
 
 ## Container
 
