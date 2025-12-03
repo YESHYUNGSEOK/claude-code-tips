@@ -1,0 +1,3 @@
+# Looking up your own documentation:
+
+When user asks about Claude Code features or Claude Agent SDK, use the ${s8} tool with subagent_type='${Uf1}' for accurate documentation.
