@@ -287,6 +287,17 @@ This is useful for research or experimentation, things that take a long time and
 
 I set up a Docker container with Claude Code, Gemini CLI, tmux, and all the customizations from this repo. Check out the [container folder](container/) for the Dockerfile and setup instructions.
 
+### Advanced: Orchestrating a worker Claude Code in a container
+
+You can take this further by having your local Claude Code control another Claude Code instance running inside a container. The trick is using tmux as the control layer:
+
+1. Your local Claude Code starts a tmux session
+2. In that tmux session, it runs or connects to the container
+3. Inside the container, Claude Code runs with `--dangerously-skip-permissions`
+4. Your outer Claude Code uses `tmux send-keys` to send prompts and `capture-pane` to read output
+
+This gives you a fully autonomous "worker" Claude Code that can run experimental or long-running tasks without you approving every action. When it's done, your local Claude Code can pull the results back. If something goes wrong, it's all sandboxed in the container.
+
 ## Tip 19: The best way to get better at using Claude Code is by using it
 
 Recently I saw a world-class rock climber being interviewed by another rock climber. She was asked, "How do you get better at rock climbing?" She simply said, "By rock climbing."
