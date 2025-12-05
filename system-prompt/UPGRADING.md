@@ -5,6 +5,8 @@ This project patches the Claude Code CLI to reduce system prompt token usage. Wh
 **Key files:**
 - `extract-system-prompt.js` - extracts readable prompt from minified CLI
 - `patch-cli.js` - applies patches to reduce prompt size
+- `backup-cli.sh` - creates backup of original CLI (with hash validation)
+- `restore-cli.sh` - restores CLI from backup
 - `patches/*.find.txt` - text to find in bundle
 - `patches/*.replace.txt` - replacement text (shorter)
 
@@ -109,6 +111,16 @@ mkdir -p system-prompt/2.0.YY/patches
 # Copy from container (exclude the large cli.js.backup)
 docker cp peaceful_lovelace:/home/claude/projects/2.0.YY/patch-cli.js system-prompt/2.0.YY/
 docker cp peaceful_lovelace:/home/claude/projects/2.0.YY/patches/. system-prompt/2.0.YY/patches/
+
+# Copy and update backup/restore scripts
+cp system-prompt/2.0.XX/backup-cli.sh system-prompt/2.0.YY/
+cp system-prompt/2.0.XX/restore-cli.sh system-prompt/2.0.YY/
+
+# Update version and hash in backup-cli.sh (use same hash as patch-cli.js)
+sed -i '' \
+  -e 's/EXPECTED_VERSION="2.0.XX"/EXPECTED_VERSION="2.0.YY"/' \
+  -e 's/EXPECTED_HASH="[^"]*"/EXPECTED_HASH="NEW_HASH_HERE"/' \
+  system-prompt/2.0.YY/backup-cli.sh
 ```
 
 ### Step 7: Apply to host and other containers
@@ -192,6 +204,28 @@ cp ../PREV_VERSION/patch-cli.js .
 ```
 
 Update `EXPECTED_VERSION`, `EXPECTED_HASH` (run `shasum -a 256` on cli.js), and `findClaudeCli()` if the installation path changed.
+
+## 5b. Copy and update backup/restore scripts
+
+```bash
+cp ../PREV_VERSION/backup-cli.sh .
+cp ../PREV_VERSION/restore-cli.sh .
+```
+
+Update `EXPECTED_VERSION` and `EXPECTED_HASH` in `backup-cli.sh` to match `patch-cli.js`:
+
+```bash
+# Get hash from cli.js
+shasum -a 256 "$(which claude | xargs realpath | xargs dirname)/cli.js"
+
+# Update backup-cli.sh with new version and hash
+sed -i '' \
+  -e 's/EXPECTED_VERSION=".*"/EXPECTED_VERSION="2.0.YY"/' \
+  -e 's/EXPECTED_HASH=".*"/EXPECTED_HASH="NEW_HASH_HERE"/' \
+  backup-cli.sh
+```
+
+Note: `restore-cli.sh` doesn't need hash updates - it just copies the backup back.
 
 ## 6. Update existing patches
 
