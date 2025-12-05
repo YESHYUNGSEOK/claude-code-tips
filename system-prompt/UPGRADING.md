@@ -8,6 +8,38 @@ This project patches the Claude Code CLI to reduce system prompt token usage. Wh
 - `patches/*.find.txt` - text to find in bundle
 - `patches/*.replace.txt` - replacement text (shorter)
 
+## Quick Method: Let Claude Do It
+
+The fastest way to upgrade is to let Claude Code handle it in a container:
+
+```bash
+# 1. Update Claude in container
+docker exec -u root peaceful_lovelace npm install -g @anthropic-ai/claude-code@latest
+
+# 2. Copy previous version's patches
+docker cp system-prompt/2.0.XX peaceful_lovelace:/home/claude/projects/
+docker exec -u root peaceful_lovelace bash -c "
+  cp -r /home/claude/projects/2.0.XX /home/claude/projects/2.0.YY
+  chown -R claude:claude /home/claude/projects/"
+
+# 3. Create backup
+docker exec peaceful_lovelace bash -c "
+  cp /usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js \
+     /home/claude/projects/2.0.YY/cli.js.backup"
+
+# 4. Update version/hash in patch-cli.js, then let Claude fix the patches
+docker exec peaceful_lovelace tmux new-session -d -s upgrade 'cd /home/claude/projects/2.0.YY && claude --dangerously-skip-permissions'
+docker exec peaceful_lovelace tmux send-keys -t upgrade \
+  'Read UPGRADING.md. Update patches for new version. The backup is cli.js.backup.
+   Run patches with --local flag to test. Keep fixing until all apply.' Enter
+```
+
+Claude will find variable mappings, update patch files, and iterate until everything works.
+
+---
+
+## Manual Method
+
 ## 1. Update Claude Code
 
 ```bash
@@ -106,7 +138,9 @@ cd patches && sed -i '' \
   *.find.txt *.replace.txt
 ```
 
-**Common mistake:** Updating only `.find.txt` files. The `.replace.txt` files contain the SAME variables and must also be updated or Claude will crash with "Execution error".
+**Common mistakes:**
+1. Updating only `.find.txt` files - the `.replace.txt` files contain the SAME variables
+2. Missing function calls with expressions like `woA()/60000` - simple sed for `woA()` won't catch these. Use broader patterns: `s/woA()/zrA()/g` catches both `${woA()}` and `${woA()/60000}`
 
 ## 7. Build new patches
 
@@ -145,6 +179,24 @@ const idx = bundle.indexOf(patch.slice(0, lo));
 console.log('Bundle:', JSON.stringify(bundle.slice(idx + lo - 20, idx + lo + 30)));
 ```
 
+## Testing patches without root (--local flag)
+
+Add a `--local` flag to patch-cli.js for testing against a local copy:
+
+```javascript
+// In patch-cli.js, modify the path detection:
+const localTest = process.argv.includes('--local');
+const basePath = localTest ? path.join(__dirname, 'cli.js') : (customPath || findClaudeCli());
+const backupPath = localTest ? path.join(__dirname, 'cli.js.backup') : (basePath + '.backup');
+```
+
+Then test without needing root:
+```bash
+cp /path/to/cli.js.backup ./cli.js.backup
+cp /path/to/cli.js.backup ./cli.js
+node patch-cli.js --local
+```
+
 ## Debugging runtime crashes
 
 Use bisect mode to find which patch breaks:
@@ -177,7 +229,7 @@ claude --dangerously-skip-permissions -p \
    duplicate, or don'\''t make sense? Report any issues you find.'
 ```
 
-**Note:** Some issues are pre-existing bugs in Claude Code itself, not caused by patches. For example, v2.0.58 has an empty bullet point in the "Doing tasks" section - this exists in the UNPATCHED version too. Always compare against the unpatched version to distinguish patch bugs from Claude Code bugs.
+**Note:** Some issues are pre-existing bugs in Claude Code itself, not caused by patches. For example, v2.0.58+ has an empty bullet point in the "Doing tasks" section and duplicate security warnings - these exist in the UNPATCHED version too. Always compare against the unpatched version to distinguish patch bugs from Claude Code bugs.
 
 **Signs of failure:**
 - `[object Object]` where a tool name should be
