@@ -1,6 +1,6 @@
 # 30 Claude Code Tips: From Basics to Advanced (Work in Progress - 23 tips so far)
 
-Tips for getting the most out of Claude Code - includes a custom status line script, system prompt patching (41% of the static overhead, ~50% of the overall overhead), using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container.
+Tips for getting the most out of Claude Code - includes a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container.
 
 ## Tip 0: Customize your status line
 
@@ -207,7 +207,7 @@ In this example:
 
 ## Tip 13: Slim down the system prompt
 
-Claude Code's system prompt and tool definitions take up about 18k tokens (~9% of your 200k context) before you even start working. I created a patch system that reduces this to about 10k tokens - saving around 7,300 tokens (41% of the static overhead).
+Claude Code's system prompt and tool definitions take up about 18k tokens (~9% of your 200k context) before you even start working. I created a patch system that reduces this to about 10k tokens - saving around 7,300 tokens (41% of the static overhead, ~50% of the overall overhead).
 
 | Component | Before | After | Savings |
 |-----------|--------|-------|---------|
