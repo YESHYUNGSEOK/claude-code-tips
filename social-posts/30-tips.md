@@ -1,6 +1,6 @@
 # 30+ Claude Code Tips: From Basics to Advanced
 
-Here are my tips for getting the most out of Claude Code, including a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container.
+Here are my tips for getting the most out of Claude Code, including a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container. Originally posted in [this repo](https://github.com/ykdojo/claude-code-tips).
 
 ## Tip 0: Customize your status line
 
@@ -438,12 +438,3 @@ The key is that it's not binary. Some people say vibe coding is bad because you 
 
 It's sort of like you're exploring a giant iceberg. If you want to stay at the vibe coding level, you can just fly over the top and check it from far away. Then you can go a little bit closer. You can go into diving mode. You can go deeper and deeper, with Claude Code as your guide.
 
----
-
-📺 **Related talk**: [Claude Code Masterclass](https://youtu.be/9UdZhTnMrTA) - lessons and project examples from 31 months of agentic coding
-
-📰 **Newsletter**: [Agentic Coding with Discipline and Skill](https://agenticcoding.substack.com/) - bring the practice of agentic coding to the next level
-
----
-
-Originally posted in [this repo](https://github.com/ykdojo/claude-code-tips).
