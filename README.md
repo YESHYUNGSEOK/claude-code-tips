@@ -464,12 +464,12 @@ GitHub: [cc-safe](https://github.com/ykdojo/cc-safe)
 
 As you write more code with Claude Code, it becomes easier to make mistakes. PR reviews and visual Git clients help catch issues (as I mentioned earlier), but writing tests is crucial as your codebase grows larger.
 
-You can have Claude Code write tests for its own code. Some people say AI can't test its own work, but it turns out it can - similar to how the human brain works. When you write tests, you're thinking about the same problem in a slightly different way. The same applies to AI.
+You can have Claude Code write tests for its own code. Some people say AI can't test its own work, but it turns out it can - similar to how the human brain works. When you write tests, you're thinking about the same problem in a different way. The same applies to AI.
 
 I've found that TDD (Test-Driven Development) works really well with Claude Code:
 
 1. Write tests first
-2. Make sure they fail (verifying the tests actually test something)
+2. Make sure they fail
 3. Commit the tests
 4. Write the code to make them pass
 
