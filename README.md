@@ -41,6 +41,7 @@ Here are my tips for getting the most out of Claude Code, including a custom sta
 - [Tip 33: Write lots of tests (and use TDD)](#tip-33-write-lots-of-tests-and-use-tdd)
 - [Tip 34: Be braver in the unknown; iterative problem solving](#tip-34-be-braver-in-the-unknown-iterative-problem-solving)
 - [Tip 35: Ctrl+B to move commands to the background](#tip-35-ctrlb-to-move-commands-to-the-background)
+- [Tip 36: Use sub-agents for context-heavy tasks](#tip-36-use-sub-agents-for-context-heavy-tasks)
 
 <!-- /TOC -->
 
@@ -568,6 +569,14 @@ Eventually I found a pretty elegant solution. The lesson: even in the world of t
 When you have a long-running bash command in Claude Code, you can press Ctrl+B to move it to run in the background. Claude Code knows how to manage background processes - it can check on them later using the BashOutput tool.
 
 This is useful when you realize a command is taking longer than expected and you want Claude to do something else in the meantime. You can either have it use the exponential backoff method I mentioned in Tip 16 to check on progress, or just let it work on something else entirely while the process runs.
+
+## Tip 36: Use sub-agents for context-heavy tasks
+
+If you need to load a bunch of PDF documents or super large files, keeping everything in the main conversation can fill up your context quickly. That can be expensive and inefficient. One way to deal with this is by spinning up sub-agents.
+
+There's a DIY approach I've discussed throughout this document. But there are also built-in sub-agents that Claude Code can use. Sometimes it's smart enough to decide to use them on its own, or you can just ask it to spin up sub-agents and it'll figure out how to use them.
+
+For example, you could say "spin up a sub-agent for each of these 10 folders that you want to explore." Each sub-agent loads its own context, does its work, and returns a summary. The main agent then aggregates and summarizes results from each sub-agent and goes from there.
 
 ---
 
