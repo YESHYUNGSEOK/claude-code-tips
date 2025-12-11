@@ -426,6 +426,12 @@ This reveals the full function signature including the new function name and hel
 
 **Step 3: Update both find and replace files** with the new function name and all helper variables.
 
+**CRITICAL: The replace.txt must use the NEW function name!** If `allowed-tools.find.txt` looks for `function n75(A)`, then `allowed-tools.replace.txt` must define `function n75(A){return""}`, NOT the old name. Using the old name (e.g., `S85`) creates a duplicate declaration error:
+```
+SyntaxError: Identifier 'S85' has already been declared
+```
+This is the most common mistake with function-based patches.
+
 ## Quick testing with non-interactive mode
 
 Use `-p` flag for faster testing:
