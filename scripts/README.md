@@ -36,12 +36,16 @@ That's it!
 - `jq` (for JSON parsing)
 - `bash`
 - `git` (optional, for branch display)
+- Claude Code 2.0.65+ (verified to work; older versions may not have the required JSON fields - check earlier commits for older versions)
 
 ### How it works
 
 Claude Code passes session metadata to status line commands via stdin as JSON, including:
 - `model.display_name` - The model name
 - `cwd` - Current working directory
+- `context_window.total_input_tokens` - Total input tokens used
+- `context_window.total_output_tokens` - Total output tokens used
+- `context_window.context_window_size` - Maximum context window size
 - `transcript_path` - Path to the session transcript JSONL file
 
-The script parses the transcript to calculate context usage from the most recent API response's token counts (input + cache tokens), showing percentage of the 200k total context window. Use `/context` for precise token breakdown.
+The script uses these JSON fields to calculate context usage (input + output tokens), showing percentage of the context window. Use `/context` for precise token breakdown.
