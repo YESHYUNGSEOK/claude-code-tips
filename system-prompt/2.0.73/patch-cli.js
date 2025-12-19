@@ -136,6 +136,11 @@ const patches = [
   { name: 'Slim AskUserQuestion (~450 → 190 chars)', file: 'askuserquestion' },
   { name: 'Slim BashOutput (~440 → 95 chars)', file: 'bashoutput' },
   { name: 'Slim KillShell (~260 → 35 chars)', file: 'killshell' },
+  // Round 10 - Further shortening
+  { name: 'Remove Task tool Usage notes + examples (~2KB)', file: 'task-usage-notes' },
+  { name: 'Further slim git commit (~400 → 200 chars)', file: 'git-commit-v2' },
+  { name: 'Further slim PR creation (~400 → 150 chars)', file: 'pr-creation-v2' },
+  { name: 'Remove TodoWrite examples (~400 chars)', file: 'todowrite-examples-v2' },
 ];
 
 // Helper: compute SHA256 hash
