@@ -1,3 +1,5 @@
+# How I got a full-time job with Claude Code
+
 I was inspired by [this post](https://www.reddit.com/r/ClaudeAI/comments/1pw14hj/claude_helped_me_get_a_full_time_job/) that mentioned they got a full-time job using Claude Code, and I wanted to share my story here too, just in case I can hopefully inspire someone.
 
 A few months ago, a company in San Francisco reached out to me on LinkedIn. I had an initial screening call with them and went through the rest of their interview process over a month or so. Throughout the whole process, Claude Code was the thing that helped me the most.
