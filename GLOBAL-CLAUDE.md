@@ -48,3 +48,11 @@ Use `gh` CLI for GitHub URLs (PRs, issues, etc.) since WebFetch often fails with
 # Python
 
 Use Python 3.12 whenever Python 3 or Python is needed.
+
+# Browser Automation
+
+Prefer DOM-based interaction over screenshots:
+- Use `read_page` to get element refs
+- Use `find` to locate elements by description
+- Click/interact using `ref` parameter instead of coordinates
+- Only use screenshots when visual context is needed
