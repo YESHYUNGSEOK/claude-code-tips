@@ -7,7 +7,7 @@ Usage:
 - Use \`run_in_background\` for long-running commands
 ${_B7()}
 - Avoid find/grep/cat/head/tail/sed/awk/echo - use dedicated tools:
-  ${qV} (file search), ${OX} (content search), ${T3} (read), ${j3} (edit), ${FI} (write)
-- Multiple commands: parallel calls if independent, '&&' if sequential
+  ${qV} (NOT find/ls), ${OX} (NOT grep/rg), ${T3} (NOT cat/head/tail), ${j3} (NOT sed/awk), ${FI} (NOT echo/cat <<EOF)
+- Multiple commands: make separate Bash calls if independent, '&&' only for dependent commands
 - Use absolute paths, avoid \`cd\`
 - \`cd\` to child directories persists; \`cd\` outside project resets to project root
