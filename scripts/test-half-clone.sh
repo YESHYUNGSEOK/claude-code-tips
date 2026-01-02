@@ -107,9 +107,10 @@ get_new_session_from_output() {
     echo "$output" | grep "New session:" | awk '{print $3}'
 }
 
-# Test 1: Even number of messages (6) -> skip 3, keep 3
+# Test 1: 6 messages (3 user, 3 assistant) -> 3 clean user msgs, skip 1, keep 2
+# Starts at user message 2 (line 3), keeps lines 3-6 = 4 messages
 test_even_messages() {
-    log_test "Even messages (6): should skip 3, keep 3"
+    log_test "6 messages (3 clean user): should start at 2nd user msg, keep 4 lines"
 
     local session_id
     session_id=$(create_test_conversation 6)
@@ -127,16 +128,17 @@ test_even_messages() {
 
     local count
     count=$(count_messages "$new_file")
-    if [ "$count" -eq 3 ]; then
-        log_pass "Kept 3 messages (correct)"
+    if [ "$count" -eq 4 ]; then
+        log_pass "Kept 4 messages (correct)"
     else
-        log_fail "Expected 3 messages, got $count"
+        log_fail "Expected 4 messages, got $count"
     fi
 }
 
-# Test 2: Odd number of messages (7) -> skip 3, keep 4
+# Test 2: 7 messages (4 user, 3 assistant) -> 4 clean user msgs, skip 2, keep 2
+# Starts at user message 3 (line 5), keeps lines 5-7 = 3 messages
 test_odd_messages() {
-    log_test "Odd messages (7): should skip 3, keep 4"
+    log_test "7 messages (4 clean user): should start at 3rd user msg, keep 3 lines"
 
     local session_id
     session_id=$(create_test_conversation 7)
@@ -149,19 +151,20 @@ test_odd_messages() {
 
     local count
     count=$(count_messages "$new_file")
-    if [ "$count" -eq 4 ]; then
-        log_pass "Kept 4 messages (correct - larger half)"
+    if [ "$count" -eq 3 ]; then
+        log_pass "Kept 3 messages (correct)"
     else
-        log_fail "Expected 4 messages, got $count"
+        log_fail "Expected 3 messages, got $count"
     fi
 }
 
-# Test 3: Minimum viable (2 messages) -> skip 1, keep 1
+# Test 3: 4 messages (2 user, 2 assistant) -> 2 clean user msgs, skip 1, keep 1
+# Starts at user message 2 (line 3), keeps lines 3-4 = 2 messages
 test_minimum_messages() {
-    log_test "Minimum messages (2): should skip 1, keep 1"
+    log_test "4 messages (2 clean user): should start at 2nd user msg, keep 2 lines"
 
     local session_id
-    session_id=$(create_test_conversation 2)
+    session_id=$(create_test_conversation 4)
     local output
     output=$(run_half_clone "$session_id")
 
@@ -171,25 +174,25 @@ test_minimum_messages() {
 
     local count
     count=$(count_messages "$new_file")
-    if [ "$count" -eq 1 ]; then
-        log_pass "Kept 1 message (correct)"
+    if [ "$count" -eq 2 ]; then
+        log_pass "Kept 2 messages (correct)"
     else
-        log_fail "Expected 1 message, got $count"
+        log_fail "Expected 2 messages, got $count"
     fi
 }
 
-# Test 4: Single message should error
+# Test 4: 2 messages (1 user, 1 assistant) -> only 1 clean user msg, should error
 test_single_message_error() {
-    log_test "Single message: should error"
+    log_test "2 messages (1 clean user): should error"
 
     local session_id
-    session_id=$(create_test_conversation 1)
+    session_id=$(create_test_conversation 2)
     local output
     if output=$(run_half_clone "$session_id" 2>&1); then
         log_fail "Should have failed but succeeded"
     else
-        if echo "$output" | grep -q "fewer than 2 messages"; then
-            log_pass "Correctly errored for single message"
+        if echo "$output" | grep -q "fewer than 2 clean user messages"; then
+            log_pass "Correctly errored for single clean user message"
         else
             log_fail "Wrong error message: $output"
         fi
