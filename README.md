@@ -571,7 +571,7 @@ Sometimes you want to try a different approach from a specific point in a conver
 - `/fork` - forks the current session from within a conversation
 - `--fork-session` - use with `--resume` or `--continue` (e.g., `claude -c --fork-session`)
 
-The script below predates these built-in options.
+The clone script below predates these built-in options, but the half-clone script below that remains unique for reducing context.
 
 The first message is tagged with `[CLONED <timestamp>]` (e.g., `[CLONED Jan 7 14:30]`), which shows up both in the `claude -r` list and inside the conversation.
 
