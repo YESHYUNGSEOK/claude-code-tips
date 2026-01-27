@@ -51,7 +51,7 @@ Even though this is still AI-assisted coding, the quality is indistinguishable f
 - **AI-powered quality control**: In addition to everything we've discussed so far, you may also have things like [background Claude Code jobs testing your CLI](https://github.com/ykdojo/claude-code-tips?tab=readme-ov-file#tip-9-complete-the-write-test-cycle-for-autonomous-tasks) if you're creating a CLI, or [AI with browser access testing your UI](https://github.com/ykdojo/claude-code-tips?tab=readme-ov-file#creative-testing-strategies) if you're working on a web app. In addition, you might have things like multi-platform testing (Windows, Linux, Mac), security and performance checks, and so on.
 - **Accelerated learning**: Instead of just letting AI write code, you ask questions like "Why did you write it this way?" or "What does this particular line mean?" Essentially, you use AI to deepen your domain expertise instead of letting it handle everything.
 
-## The matrix
+## The agentic coding matrix
 
 To summarize, I created this simple matrix as a shorthand for these four levels:
 
