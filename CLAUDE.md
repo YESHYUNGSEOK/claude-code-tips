@@ -5,5 +5,6 @@
 - After adding or renaming tips, run `node scripts/generate-toc.js` to update the table of contents
 
 ## System prompt patching
+- Upgrade guide: `system-prompt/UPGRADING.md`
 - When upgrading patches, **always test `/context` in the container** before copying to host. Don't skip the Final Verification Checklist at the bottom of UPGRADING.md.
 - For function-based patches (like `allowed-tools`), the replace.txt must use the NEW function name, not the old one.
