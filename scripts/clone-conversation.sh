@@ -99,11 +99,28 @@ get_project_from_conv_file() {
     echo "$project_dirname" | sed 's|^-|/|' | sed 's|-|/|g'
 }
 
-# Pre-generate UUIDs for the awk script using hexdump (much faster than uuidgen loop)
+# Pre-generate UUIDs for the awk script
 pre_generate_uuids() {
     local count="$1"
     local output_file="$2"
-    hexdump -vn $((count * 16)) -e '4/1 "%02x" "-" 2/1 "%02x" "-" 2/1 "%02x" "-" 2/1 "%02x" "-" 6/1 "%02x" "\n"' /dev/urandom > "$output_file"
+
+    if command -v hexdump &> /dev/null; then
+        # Fast path: hexdump
+        hexdump -vn $((count * 16)) -e '4/1 "%02x" "-" 2/1 "%02x" "-" 2/1 "%02x" "-" 2/1 "%02x" "-" 6/1 "%02x" "\n"' /dev/urandom > "$output_file"
+    elif [[ -r /proc/sys/kernel/random/uuid ]]; then
+        # Linux fallback
+        for ((i=0; i<count; i++)); do
+            cat /proc/sys/kernel/random/uuid
+        done > "$output_file"
+    elif command -v uuidgen &> /dev/null; then
+        # macOS/BSD fallback
+        for ((i=0; i<count; i++)); do
+            uuidgen | tr '[:upper:]' '[:lower:]'
+        done > "$output_file"
+    else
+        log_error "No UUID generation method available (need hexdump, /proc/sys/kernel/random/uuid, or uuidgen)"
+        return 1
+    fi
 }
 
 clone_conversation() {
@@ -217,7 +234,7 @@ clone_conversation() {
     }
 
     function extract_uuid(line, key,    pattern, match_str, uuid) {
-        pattern = "\"" key "\":\"[a-f0-9-]{36}\""
+        pattern = "\"" key "\":\"[a-f0-9][a-f0-9-]*[a-f0-9]\""
         if (match(line, pattern)) {
             match_str = substr(line, RSTART, RLENGTH)
             uuid = match_str
@@ -241,7 +258,7 @@ clone_conversation() {
         }
 
         # Replace uuid (not parentUuid, not sessionId)
-        if (match(line, /"uuid":"[a-f0-9-]{36}"/)) {
+        if (match(line, /"uuid":"[a-f0-9][a-f0-9-]*[a-f0-9]"/)) {
             match_str = substr(line, RSTART, RLENGTH)
             old_uuid = match_str
             gsub("\"uuid\":\"", "", old_uuid)
