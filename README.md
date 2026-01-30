@@ -1,6 +1,6 @@
-# 40+ Claude Code Tips: From Basics to Advanced
+# 45 Claude Code Tips: From Basics to Advanced
 
-Here are my tips for getting the most out of Claude Code, including a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container. Also includes the [dx plugin](#install-the-dx-plugin).
+Here are my tips for getting the most out of Claude Code, including a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container. Also includes the [dx plugin](#tip-44-install-the-dx-plugin).
 
 📺 [Quick demo](https://www.youtube.com/watch?v=hiISl558JGE) - See some of these tips in action with a multi-Claude workflow and voice input:
 
@@ -53,7 +53,8 @@ Here are my tips for getting the most out of Claude Code, including a custom sta
 - [Tip 41: Automation of automation](#tip-41-automation-of-automation)
 - [Tip 42: Share your knowledge and contribute where you can](#tip-42-share-your-knowledge-and-contribute-where-you-can)
 - [Tip 43: Keep learning!](#tip-43-keep-learning)
-- [Install the dx plugin](#install-the-dx-plugin)
+- [Tip 44: Install the dx plugin](#tip-44-install-the-dx-plugin)
+- [Tip 45: Quick setup script](#tip-45-quick-setup-script)
 
 <!-- /TOC -->
 
@@ -297,7 +298,7 @@ Then start a fresh conversation. For the fresh agent, you can just give the path
 
 In subsequent conversations, you can ask the agent to update the document for the next agent.
 
-I've also created a `/handoff` slash command that automates this - it checks for an existing HANDOFF.md, reads it if present, then creates or updates it with the goal, progress, what worked, what didn't, and next steps. You can find it in the [commands folder](commands/handoff.md), or install it via the [dx plugin](#install-the-dx-plugin).
+I've also created a `/handoff` slash command that automates this - it checks for an existing HANDOFF.md, reads it if present, then creates or updates it with the goal, progress, what worked, what didn't, and next steps. You can find it in the [commands folder](commands/handoff.md), or install it via the [dx plugin](#tip-44-install-the-dx-plugin).
 
 **Alternative: Use plan mode**
 
@@ -394,7 +395,7 @@ This uses the same tmux pattern from Tip 9 - start a session, send commands, cap
 
 Skills are more token-efficient because Claude Code only loads them when needed. If you want something simpler, you can put a condensed version in `~/.claude/CLAUDE.md` instead, but that gets loaded into every conversation whether you need it or not.
 
-I tested this by asking Claude Code to check how Claude Code skills are regarded on Reddit - a bit meta. It goes back and forth with Gemini for a while, so it's not fast, but the report quality was surprisingly good. Obviously, you'll need to have Gemini CLI installed for this to work. You can also install this skill via the [dx plugin](#install-the-dx-plugin).
+I tested this by asking Claude Code to check how Claude Code skills are regarded on Reddit - a bit meta. It goes back and forth with Gemini for a while, so it's not fast, but the report quality was surprisingly good. Obviously, you'll need to have Gemini CLI installed for this to work. You can also install this skill via the [dx plugin](#tip-44-install-the-dx-plugin).
 
 ## Tip 12: Invest in your own workflow
 
@@ -623,7 +624,7 @@ ln -s /path/to/this/repo/scripts/clone-conversation.sh ~/.claude/scripts/clone-c
 ln -s /path/to/this/repo/commands/clone.md ~/.claude/commands/clone.md
 ```
 
-Or install via the [dx plugin](#install-the-dx-plugin) - no symlinks needed.
+Or install via the [dx plugin](#tip-44-install-the-dx-plugin) - no symlinks needed.
 
 Then just type `/clone` (or `/dx:clone` if using the plugin) in any conversation and Claude will handle finding the session ID and running the script.
 
@@ -639,7 +640,7 @@ ln -s /path/to/this/repo/scripts/half-clone-conversation.sh ~/.claude/scripts/ha
 ln -s /path/to/this/repo/commands/half-clone.md ~/.claude/commands/half-clone.md
 ```
 
-Or install via the [dx plugin](#install-the-dx-plugin) - no symlinks needed.
+Or install via the [dx plugin](#tip-44-install-the-dx-plugin) - no symlinks needed.
 
 ### Recommended permission for clone scripts
 
@@ -674,7 +675,7 @@ Skills and slash commands are pretty similar in the way they function. The diffe
 
 **Plugins** are a way to package skills, slash commands, agents, hooks, and MCP servers together. But a plugin doesn't have to use all of them. Anthropic's official `frontend-design` plugin is essentially just a skill and nothing else. It could be distributed as a standalone skill, but the plugin format makes it easier to install.
 
-For example, I built a plugin called `dx` that bundles slash commands and a skill from this repo together. You can see how it works in the [Install the dx plugin](#install-the-dx-plugin) section.
+For example, I built a plugin called `dx` that bundles slash commands and a skill from this repo together. You can see how it works in the [Install the dx plugin](#tip-44-install-the-dx-plugin) section.
 
 ## Tip 26: Interactive PR reviews
 
@@ -702,7 +703,7 @@ Another one is letting it check itself, its own work. If it gives you some sort 
 
 I wanted to specifically create a separate tip for this because it's been really amazing for me. Whenever there are GitHub Actions CI failures, I just give it to Claude Code and say "dig into this issue, try to find the root cause." Sometimes it gives you surface level answers, but if you just keep asking - was it caused by a particular commit, a particular PR, or is it a flaky issue? - it really helps you dig into these nasty issues that are hard to dig into by hand. You would need to wade through a bunch of logs and that would be super painful to do manually, but Claude Code is able to handle a lot of that.
 
-I've packaged this workflow as a `/gha` slash command - just run `/gha <url>` with any GitHub Actions URL and it will automatically investigate the failure, check for flakiness, identify breaking commits, and suggest fixes. You can find it in the [commands folder](commands/gha.md), or install it via the [dx plugin](#install-the-dx-plugin).
+I've packaged this workflow as a `/gha` slash command - just run `/gha <url>` with any GitHub Actions URL and it will automatically investigate the failure, check for flakiness, identify breaking commits, and suggest fixes. You can find it in the [commands folder](commands/gha.md), or install it via the [dx plugin](#tip-44-install-the-dx-plugin).
 
 Once you identify what the particular problem was, you can just create a draft PR and go through some of the tips I mentioned earlier - check the output, make sure it looks good, let it verify its own outputs, and then turn it into a real PR to actually fix the issue. It's been working really well for me personally.
 
@@ -921,7 +922,7 @@ There are several effective ways to keep learning about Claude Code:
 - [Twitter/X: Advent of Claude posts](https://x.com/search?q=from%3Aadocomplete%20advent%20of%20claude&src=typed_query&f=live)
 - [LinkedIn: Advent of Claude posts](https://www.linkedin.com/search/results/content/?fromMember=%5B%22ACoAAAFdD3IBYHwKSh6FsyGqOh1SpbrZ9ZHTjnI%22%5D&keywords=advent%20of%20claude&origin=FACETED_SEARCH&sid=zDV&sortBy=%22date_posted%22)
 
-## Install the dx plugin
+## Tip 44: Install the dx plugin
 
 This repo is also a Claude Code plugin called `dx` (developer experience). It bundles several tools from the tips above into a single install:
 
@@ -944,6 +945,35 @@ claude plugin install dx@ykdojo
 After installing, the commands are available as `/dx:clone`, `/dx:half-clone`, `/dx:handoff`, and `/dx:gha`. The `reddit-fetch` skill is invoked automatically when you ask about Reddit URLs. The `review-claudemd` skill analyzes your recent conversations and suggests improvements for your CLAUDE.md files. For the clone commands, see the [recommended permission](#recommended-permission-for-clone-scripts).
 
 **Recommended companion:** [Playwright MCP](https://github.com/microsoft/playwright-mcp) for browser automation - add with `claude mcp add -s user playwright npx @playwright/mcp@latest`
+
+## Tip 45: Quick setup script
+
+If you want to set up multiple recommendations from this repo at once, there's a setup script that handles many of them:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/ykdojo/claude-code-tips/main/scripts/setup.sh)
+```
+
+The script shows you everything it will configure and lets you skip any items:
+
+```
+INSTALLS:
+  1. DX plugin - slash commands (/dx:gha, /dx:clone, /dx:handoff) and skills (reddit-fetch)
+  2. cc-safe - scans your settings for risky approved commands like 'rm -rf' or 'sudo'
+
+SETTINGS (~/.claude/settings.json):
+  3. Status line - shows model, git branch, uncommitted files, token usage at bottom of screen
+  4. Disable auto-updates - prevents Claude Code from auto-updating (useful for system prompt patches)
+  5. Lazy-load MCP tools - only loads MCP tool definitions when needed, saves context
+  6. Read(~/.claude) permission - allows clone/half-clone commands to read conversation history
+  7. Read(//tmp/**) permission - allows reading temporary files without prompts
+
+SHELL CONFIG (~/.zshrc or ~/.bashrc):
+  8. Aliases: c=claude, ch=claude --chrome, cs=claude --dangerously-skip-permissions
+  9. Fork shortcut: --fs expands to --fork-session (e.g., claude -c --fs)
+
+Skip any? [e.g., 1 4 7 or Enter for all]:
+```
 
 ---
 
