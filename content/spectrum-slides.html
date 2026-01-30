@@ -74,6 +74,15 @@
       color: #888;
     }
 
+    .slide[data-progressive] .content li {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .slide[data-progressive] .content li.visible {
+      opacity: 1;
+    }
+
     .slide img {
       max-width: 85%;
       max-height: 75vh;
@@ -157,7 +166,7 @@
   </div>
 
   <!-- Slide 7: Level 1 details -->
-  <div class="slide">
+  <div class="slide" data-progressive>
     <div class="content">
       <ul>
         <li>Let AI go wild</li>
@@ -170,8 +179,7 @@
 
   <!-- Slide 8: Level 1 caveat -->
   <div class="slide">
-    <h2>Fine for prototypes and throwaway scripts</h2>
-    <div class="subtitle">But don't expect it to be maintainable</div>
+    <h2>Fine for one-off projects</h2>
   </div>
 
   <!-- Slide 9: Level 2 header -->
@@ -179,8 +187,8 @@
     <h1>Level 2: Agentic coding with discipline</h1>
   </div>
 
-  <!-- Slide 10: Level 2 details -->
-  <div class="slide">
+  <!-- Slide 9: Level 2 details -->
+  <div class="slide" data-progressive>
     <div class="content">
       <ul>
         <li>Version control - Git and GitHub</li>
@@ -196,8 +204,8 @@
     <h1>Level 3: Agentic software engineering</h1>
   </div>
 
-  <!-- Slide 12: Level 3 details -->
-  <div class="slide">
+  <!-- Slide 11: Level 3 details -->
+  <div class="slide" data-progressive>
     <div class="content">
       <ul>
         <li>Tests you actually verify</li>
@@ -225,8 +233,8 @@
     <div class="subtitle">Ideally done faster</div>
   </div>
 
-  <!-- Slide 16: Level 4 details 1 -->
-  <div class="slide">
+  <!-- Slide 15: Level 4 details 1 -->
+  <div class="slide" data-progressive>
     <div class="content">
       <ul>
         <li>Line-by-line understanding</li>
@@ -236,8 +244,8 @@
     </div>
   </div>
 
-  <!-- Slide 17: Level 4 details 2 -->
-  <div class="slide">
+  <!-- Slide 16: Level 4 details 2 -->
+  <div class="slide" data-progressive>
     <div class="content">
       <ul>
         <li>Advanced research methods</li>
@@ -336,15 +344,39 @@
     const navHint = document.querySelector('.nav-hint');
     let current = 0;
 
+    function initSlide(slide) {
+      if (slide.hasAttribute('data-progressive')) {
+        const items = slide.querySelectorAll('li');
+        items.forEach((li, i) => {
+          if (i === 0) li.classList.add('visible');
+          else li.classList.remove('visible');
+        });
+      }
+    }
+
     function showSlide(n) {
       if (n < 0 || n >= slides.length) return;
       slides[current].classList.remove('active');
       current = n;
       slides[current].classList.add('active');
+      initSlide(slides[current]);
       progress.textContent = `${current + 1} / ${slides.length}`;
+      window.location.hash = current + 1;
     }
 
-    function next() { showSlide(current + 1); }
+    function next() {
+      const slide = slides[current];
+      if (slide.hasAttribute('data-progressive')) {
+        const items = slide.querySelectorAll('li');
+        const hidden = slide.querySelectorAll('li:not(.visible)');
+        if (hidden.length > 0) {
+          hidden[0].classList.add('visible');
+          return;
+        }
+      }
+      showSlide(current + 1);
+    }
+
     function prev() { showSlide(current - 1); }
 
     document.addEventListener('keydown', (e) => {
@@ -360,7 +392,9 @@
       if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
     });
 
-    showSlide(0);
+    // Load from URL hash or start at 0
+    const hash = parseInt(window.location.hash.slice(1)) - 1;
+    showSlide(hash >= 0 && hash < slides.length ? hash : 0);
   </script>
 </body>
 </html>
