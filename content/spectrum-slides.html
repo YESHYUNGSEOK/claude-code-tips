@@ -37,7 +37,7 @@
       font-size: 3.5rem;
       font-weight: 600;
       line-height: 1.3;
-      max-width: 900px;
+      max-width: 1200px;
     }
 
     h2 {
@@ -344,40 +344,62 @@
     const navHint = document.querySelector('.nav-hint');
     let current = 0;
 
-    function initSlide(slide) {
+    function initSlide(slide, bulletCount) {
       if (slide.hasAttribute('data-progressive')) {
         const items = slide.querySelectorAll('li');
+        const showCount = bulletCount || 1;
         items.forEach((li, i) => {
-          if (i === 0) li.classList.add('visible');
+          if (i < showCount) li.classList.add('visible');
           else li.classList.remove('visible');
         });
       }
     }
 
-    function showSlide(n) {
+    function updateHash() {
+      const slide = slides[current];
+      const visible = slide.querySelectorAll('li.visible').length;
+      if (slide.hasAttribute('data-progressive') && visible > 0) {
+        window.location.hash = `${current + 1}-${visible}`;
+      } else {
+        window.location.hash = current + 1;
+      }
+    }
+
+    function showSlide(n, bulletCount) {
       if (n < 0 || n >= slides.length) return;
       slides[current].classList.remove('active');
       current = n;
       slides[current].classList.add('active');
-      initSlide(slides[current]);
+      initSlide(slides[current], bulletCount);
       progress.textContent = `${current + 1} / ${slides.length}`;
-      window.location.hash = current + 1;
+      updateHash();
     }
 
     function next() {
       const slide = slides[current];
       if (slide.hasAttribute('data-progressive')) {
-        const items = slide.querySelectorAll('li');
         const hidden = slide.querySelectorAll('li:not(.visible)');
         if (hidden.length > 0) {
           hidden[0].classList.add('visible');
+          updateHash();
           return;
         }
       }
       showSlide(current + 1);
     }
 
-    function prev() { showSlide(current - 1); }
+    function prev() {
+      const slide = slides[current];
+      if (slide.hasAttribute('data-progressive')) {
+        const visible = slide.querySelectorAll('li.visible');
+        if (visible.length > 1) {
+          visible[visible.length - 1].classList.remove('visible');
+          updateHash();
+          return;
+        }
+      }
+      showSlide(current - 1);
+    }
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === ' ') next();
@@ -393,8 +415,10 @@
     });
 
     // Load from URL hash or start at 0
-    const hash = parseInt(window.location.hash.slice(1)) - 1;
-    showSlide(hash >= 0 && hash < slides.length ? hash : 0);
+    const hashParts = window.location.hash.slice(1).split('-');
+    const slideNum = parseInt(hashParts[0]) - 1;
+    const bulletCount = parseInt(hashParts[1]) || 1;
+    showSlide(slideNum >= 0 && slideNum < slides.length ? slideNum : 0, bulletCount);
   </script>
 </body>
 </html>
