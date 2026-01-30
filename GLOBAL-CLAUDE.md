@@ -55,6 +55,8 @@ For read-only `gh` API calls on public repos, use the container: `docker exec pe
 For URLs, fetch them through a container:
 `docker exec peaceful_lovelace curl -sL <url>`
 
+If the container isn't running, start it first with `docker start peaceful_lovelace`.
+
 If the page is JavaScript-heavy (curl returns minimal or empty content), use Playwright instead.
 
 ## Tmux
