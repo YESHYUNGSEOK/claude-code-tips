@@ -83,6 +83,15 @@
       opacity: 1;
     }
 
+    .slide[data-progressive="table"] tr:not(:first-child) {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .slide[data-progressive="table"] tr.visible {
+      opacity: 1;
+    }
+
     .slide img {
       max-width: 85%;
       max-height: 75vh;
@@ -261,7 +270,7 @@
   </div>
 
   <!-- Slide 18: Matrix table -->
-  <div class="slide">
+  <div class="slide" data-progressive="table">
     <table>
       <tr>
         <th>Level</th>
@@ -349,25 +358,36 @@
     const navHint = document.querySelector('.nav-hint');
     let current = 0;
 
-    function initSlide(slide, bulletCount) {
+    function getProgressiveItems(slide) {
+      if (slide.getAttribute('data-progressive') === 'table') {
+        return slide.querySelectorAll('tr:not(:first-child)');
+      }
+      return slide.querySelectorAll('li');
+    }
+
+    function initSlide(slide, itemCount) {
       if (slide.hasAttribute('data-progressive')) {
-        const items = slide.querySelectorAll('li');
-        const showCount = bulletCount || 1;
-        items.forEach((li, i) => {
-          if (i < showCount) li.classList.add('visible');
-          else li.classList.remove('visible');
+        const items = getProgressiveItems(slide);
+        const isTable = slide.getAttribute('data-progressive') === 'table';
+        const showCount = itemCount !== undefined ? itemCount : (isTable ? 0 : 1);
+        items.forEach((item, i) => {
+          if (i < showCount) item.classList.add('visible');
+          else item.classList.remove('visible');
         });
       }
     }
 
     function updateHash() {
       const slide = slides[current];
-      const visible = slide.querySelectorAll('li.visible').length;
-      if (slide.hasAttribute('data-progressive') && visible > 0) {
-        window.location.hash = `${current + 1}-${visible}`;
-      } else {
-        window.location.hash = current + 1;
+      if (slide.hasAttribute('data-progressive')) {
+        const items = getProgressiveItems(slide);
+        const visible = Array.from(items).filter(i => i.classList.contains('visible')).length;
+        if (visible > 0) {
+          window.location.hash = `${current + 1}-${visible}`;
+          return;
+        }
       }
+      window.location.hash = current + 1;
     }
 
     function showSlide(n, bulletCount) {
@@ -383,7 +403,8 @@
     function next() {
       const slide = slides[current];
       if (slide.hasAttribute('data-progressive')) {
-        const hidden = slide.querySelectorAll('li:not(.visible)');
+        const items = getProgressiveItems(slide);
+        const hidden = Array.from(items).filter(i => !i.classList.contains('visible'));
         if (hidden.length > 0) {
           hidden[0].classList.add('visible');
           updateHash();
@@ -396,8 +417,11 @@
     function prev() {
       const slide = slides[current];
       if (slide.hasAttribute('data-progressive')) {
-        const visible = slide.querySelectorAll('li.visible');
-        if (visible.length > 1) {
+        const items = getProgressiveItems(slide);
+        const visible = Array.from(items).filter(i => i.classList.contains('visible'));
+        const isTable = slide.getAttribute('data-progressive') === 'table';
+        const minVisible = isTable ? 0 : 1;
+        if (visible.length > minVisible) {
           visible[visible.length - 1].classList.remove('visible');
           updateHash();
           return;
@@ -422,8 +446,8 @@
     // Load from URL hash or start at 0
     const hashParts = window.location.hash.slice(1).split('-');
     const slideNum = parseInt(hashParts[0]) - 1;
-    const bulletCount = parseInt(hashParts[1]) || 1;
-    showSlide(slideNum >= 0 && slideNum < slides.length ? slideNum : 0, bulletCount);
+    const itemCount = hashParts[1] !== undefined ? parseInt(hashParts[1]) : undefined;
+    showSlide(slideNum >= 0 && slideNum < slides.length ? slideNum : 0, itemCount);
   </script>
 </body>
 </html>
