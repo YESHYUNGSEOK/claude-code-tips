@@ -75,10 +75,6 @@ Note: For Claude Code sessions, you may need to send Enter again after a short d
 
 If you need to wait for a long-running job, use sleep commands with manual exponential backoff: wait 1 minute, then 2 minutes, then 4 minutes, and so on.
 
-# Claude Code versions
-
-When asked about new versions, use `npm view @anthropic-ai/claude-code version`
-
 # Claude for Chrome
 
 - Use `read_page` to get element refs from the accessibility tree
