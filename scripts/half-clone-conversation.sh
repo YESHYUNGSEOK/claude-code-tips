@@ -123,6 +123,34 @@ pre_generate_uuids() {
     fi
 }
 
+preview_conversation() {
+    local source_session="$1"
+    local project_path="$2"
+
+    local source_file
+    if ! source_file=$(find_conversation_file "$source_session" "$project_path"); then
+        log_error "Could not find conversation file for session: $source_session"
+        exit 1
+    fi
+
+    local total_lines
+    total_lines=$(wc -l < "$source_file" | tr -d ' ')
+    local first_user_text
+    first_user_text=$(grep '"type":"user"' "$source_file" | grep -v '"type":"tool_result"' | head -1 | \
+        grep -oE '"(content|text)":"[^"]*"' | head -1 | \
+        sed 's/"content":"//;s/"text":"//;s/"$//' | cut -c1-120 || true)
+    local last_user_text
+    last_user_text=$(grep '"type":"user"' "$source_file" | grep -v '"type":"tool_result"' | tail -1 | \
+        grep -oE '"(content|text)":"[^"]*"' | head -1 | \
+        sed 's/"content":"//;s/"text":"//;s/"$//' | cut -c1-120 || true)
+
+    echo "Session:       $source_session"
+    echo "File:          $source_file"
+    echo "Total lines:   $total_lines"
+    echo "First message: ${first_user_text:-[unable to extract]}"
+    echo "Last message:  ${last_user_text:-[unable to extract]}"
+}
+
 half_clone_conversation() {
     local source_session="$1"
     local project_path="$2"
@@ -349,6 +377,20 @@ half_clone_conversation() {
     }
     ' "$source_file" > "$target_file"
 
+    # Append a reference message linking back to the original conversation
+    # Find the last uuid in the cloned file (could be "uuid" or "leafUuid")
+    local last_uuid
+    last_uuid=$(tail -5 "$target_file" | grep -oE '"(uuid|leafUuid)":"[a-f0-9-]+"' | tail -1 | sed 's/.*"://;s/"//g' || true)
+    if [ -z "$last_uuid" ]; then
+        last_uuid=$(generate_uuid)
+    fi
+    local ref_uuid
+    ref_uuid=$(generate_uuid)
+    local ref_timestamp
+    ref_timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+    local ref_text="Note: this is a half-clone that only contains the later half of the original conversation. To see the full original conversation, check session \`${source_session}\` at: ${source_file}"
+    echo "{\"parentUuid\":\"${last_uuid}\",\"isSidechain\":false,\"userType\":\"external\",\"sessionId\":\"${new_session}\",\"type\":\"assistant\",\"message\":{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"${ref_text}\"}]},\"uuid\":\"${ref_uuid}\",\"timestamp\":\"${ref_timestamp}\",\"isMeta\":true}" >> "$target_file"
+
     local output_line_count
     output_line_count=$(wc -l < "$target_file" | tr -d ' ')
     log_success "Wrote $output_line_count messages to $target_file"
@@ -407,6 +449,12 @@ half_clone_conversation() {
 }
 
 # Main
+PREVIEW_MODE=false
+if [ "${1:-}" = "--preview" ]; then
+    PREVIEW_MODE=true
+    shift
+fi
+
 if [ $# -lt 1 ]; then
     usage
 fi
@@ -425,4 +473,8 @@ if [ ! -d "$CLAUDE_DIR" ]; then
     exit 1
 fi
 
-half_clone_conversation "$SESSION_ID" "$PROJECT_PATH"
+if [ "$PREVIEW_MODE" = true ]; then
+    preview_conversation "$SESSION_ID" "$PROJECT_PATH"
+else
+    half_clone_conversation "$SESSION_ID" "$PROJECT_PATH"
+fi
