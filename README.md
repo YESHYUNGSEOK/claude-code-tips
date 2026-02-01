@@ -685,7 +685,7 @@ Then add the hook to your `~/.claude/settings.json`:
 }
 ```
 
-This requires auto-compact to be disabled (`/config` > Auto-compact > false), otherwise Claude Code may compact the context before the hook gets a chance to fire. When triggered, the hook blocks Claude from stopping and tells it to run `/half-clone`. The advantage over auto-compact is that half-clone is deterministic - it keeps your actual messages intact instead of summarizing them.
+This requires auto-compact to be disabled (`/config` > Auto-compact > false), otherwise Claude Code may compact the context before the hook gets a chance to fire. When triggered, the hook blocks Claude from stopping and tells it to run `/half-clone`. The advantage over auto-compact is that half-clone is deterministic and fast - it keeps your actual messages intact instead of summarizing them.
 
 ### Recommended permission for clone scripts
 
