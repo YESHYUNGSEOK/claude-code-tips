@@ -977,7 +977,7 @@ This repo is also a Claude Code plugin called `dx` (developer experience). It bu
 | `/dx:handoff` | Create handoff documents for context continuity (Tip 8) |
 | `/dx:clone` | Clone conversations to branch off (Tip 23) |
 | `/dx:half-clone` | Half-clone to reduce context (Tip 23) |
-| `/dx:reddit-fetch` | Fetch Reddit content via Gemini CLI (Tip 11) - auto-invoked when needed |
+| `/dx:reddit-fetch` | Fetch Reddit content via Gemini CLI (Tip 11) |
 | `/dx:review-claudemd` | Review conversations to improve CLAUDE.md files (Tip 30) |
 
 **Install with two commands:**
