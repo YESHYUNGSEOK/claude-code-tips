@@ -657,6 +657,36 @@ ln -s /path/to/this/repo/commands/half-clone.md ~/.claude/commands/half-clone.md
 
 Or install via the [dx plugin](#tip-44-install-the-dx-plugin) - no symlinks needed.
 
+### Auto-suggest half-clone with a hook
+
+Optionally, you can use a [hook](https://docs.anthropic.com/en/docs/claude-code/hooks) to automatically trigger `/half-clone` when your context gets too long. The [check-context script](scripts/check-context.sh) runs after every Claude response and checks context usage. If it's over 80%, it tells Claude to run `/half-clone`, which creates a new conversation with only the later half so a new agent can continue there.
+
+To set it up, first copy the script:
+```bash
+cp /path/to/this/repo/scripts/check-context.sh ~/.claude/scripts/check-context.sh
+chmod +x ~/.claude/scripts/check-context.sh
+```
+
+Then add the hook to your `~/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/check-context.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This requires auto-compact to be disabled (`/config` > Auto-compact > false), otherwise Claude Code may compact the context before the hook gets a chance to fire. When triggered, the hook blocks Claude from stopping and tells it to run `/half-clone`. The advantage over auto-compact is that half-clone preserves your actual conversation messages instead of summarizing them away.
+
 ### Recommended permission for clone scripts
 
 Both clone scripts need to read `~/.claude` (for conversation files and history). To avoid permission prompts from any project, add this to your global settings (`~/.claude/settings.json`):
