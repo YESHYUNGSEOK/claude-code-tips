@@ -522,11 +522,21 @@ Add this to `~/.claude/settings.json`. Claude will search for and load MCP tools
 
 ## Tip 16: Git worktrees for parallel branch work
 
-If you're working on multiple files or multiple branches and you don't want them to get conflicted, Git worktrees are a great way to work on them at the same time. You can just ask Claude Code to create a git worktree and start working on it there - you don't have to worry about the specific syntax.
+If you're working on multiple things at the same time in the same project and you don't want them to get conflicted, Git worktrees are a great way to do that. You can just ask Claude Code to create a git worktree and start working on it there - you don't have to worry about the specific syntax.
 
 The basic idea is that you can work on a different branch in a different directory. It's essentially a branch + a directory.
 
 You can add this layer of Git worktrees on top of the cascade method I discussed in the multitasking tip.
+
+### What are git worktrees?
+
+A git worktree is just like any other git branch, but with a new directory specifically assigned to it.
+
+So if you're working on, let's say, the main branch and feature-branch-1, then without git worktrees, you can only work on them one at a time because your project folder can only be set to one branch at a time.
+
+However, with a git worktree, you can keep working on the main branch (or any other branch for that matter) in the original project folder, and at the same time work on feature-branch-1 in a new folder.
+
+![Git worktrees diagram showing parallel branch work in separate directories](assets/git-worktrees.png)
 
 ## Tip 17: Manual exponential backoff for long-running jobs
 
