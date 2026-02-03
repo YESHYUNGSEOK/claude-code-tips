@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Stop hook: suggests /half-clone when context usage exceeds 80%.
+# Stop hook: suggests /half-clone when context usage exceeds 85%.
 # When triggered, it blocks Claude from stopping and tells it to run /half-clone,
 # which creates a new conversation with only the later half to continue in.
 # Install by adding to ~/.claude/settings.json:
@@ -47,6 +47,6 @@ fi
 
 pct=$((context_length * 100 / max_context))
 
-if [[ $pct -ge 80 ]]; then
+if [[ $pct -ge 85 ]]; then
     echo "{\"decision\": \"block\", \"reason\": \"Context usage is at ${pct}%. Please run /half-clone to create a new conversation with only the later half so a new agent can continue there.\"}"
 fi

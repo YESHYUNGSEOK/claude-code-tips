@@ -669,7 +669,7 @@ Or install via the [dx plugin](#tip-44-install-the-dx-plugin) - no symlinks need
 
 ### Auto-suggest half-clone with a hook
 
-Optionally, you can use a [hook](https://docs.anthropic.com/en/docs/claude-code/hooks) to automatically trigger `/half-clone` when your context gets too long. The [check-context script](scripts/check-context.sh) runs after every Claude response and checks context usage. If it's over 80%, it tells Claude to run `/half-clone`, which creates a new conversation with only the later half so a new agent can continue there.
+Optionally, you can use a [hook](https://docs.anthropic.com/en/docs/claude-code/hooks) to automatically trigger `/half-clone` when your context gets too long. The [check-context script](scripts/check-context.sh) runs after every Claude response and checks context usage. If it's over 85%, it tells Claude to run `/half-clone`, which creates a new conversation with only the later half so a new agent can continue there.
 
 To set it up, first copy the script:
 ```bash
