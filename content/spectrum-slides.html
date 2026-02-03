@@ -371,16 +371,16 @@
   </div>
 
   <!-- Slide 16: Terminal demo
-       To run: cd ~/Desktop/projects/librarian2 && ttyd -W tmux new -A -s demo \; set status off \; set mouse on
-       (-W for writable, tmux for shared session across refreshes, status off hides the green bar)
+       To run: cd ~/Desktop/projects/librarian2 && ttyd -i 127.0.0.1 -p 7777 -W tmux new -A -s demo \; set status off \; set mouse on
+       (-i 127.0.0.1 binds to localhost only, -p 7777 uses a specific port, -W for writable, tmux for shared session across refreshes, status off hides the green bar)
   -->
   <div class="slide">
     <div class="side-by-side">
       <div class="terminal-container">
-        <iframe src="http://localhost:7681" class="terminal-frame" id="terminal-iframe"></iframe>
+        <iframe src="http://localhost:7777" class="terminal-frame" id="terminal-iframe"></iframe>
         <div class="terminal-fallback" id="terminal-fallback">
           <p>Live terminal demo</p>
-          <p class="fallback-hint">To run locally: cd ~/Desktop/projects/librarian2 && ttyd -W tmux new -A -s demo \; set status off \; set mouse on</p>
+          <p class="fallback-hint">To run locally: cd ~/Desktop/projects/librarian2 && ttyd -i 127.0.0.1 -p 7777 -W tmux new -A -s demo \; set status off \; set mouse on</p>
         </div>
       </div>
       <div class="pr-container">
@@ -480,10 +480,10 @@
   -->
   <div class="slide">
     <div class="terminal-container terminal-full">
-      <iframe src="http://localhost:7681" class="terminal-frame"></iframe>
+      <iframe src="http://localhost:7777" class="terminal-frame"></iframe>
       <div class="terminal-fallback">
         <p>Live terminal demo</p>
-        <p class="fallback-hint">To run locally: cd ~/Desktop/projects/librarian2 && ttyd -W tmux new -A -s demo \; set status off \; set mouse on</p>
+        <p class="fallback-hint">To run locally: cd ~/Desktop/projects/librarian2 && ttyd -i 127.0.0.1 -p 7777 -W tmux new -A -s demo \; set status off \; set mouse on</p>
       </div>
     </div>
   </div>
@@ -615,7 +615,7 @@
     showSlide(slideNum >= 0 && slideNum < slides.length ? slideNum : 0, itemCount);
 
     // Check if ttyd is running
-    fetch('http://localhost:7681', { mode: 'no-cors' })
+    fetch('http://localhost:7777', { mode: 'no-cors' })
       .then(() => {
         // ttyd is running
         document.querySelectorAll('.terminal-container').forEach(el => el.classList.remove('offline'));
