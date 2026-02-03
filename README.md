@@ -586,7 +586,7 @@ Another example is how I created the [system prompt patching scripts](system-pro
 
 In fact, it was able to complete the migration pretty much on its own. It tried applying the patches, found that some didn't work with the new version, iterated to fix them, and even improved the [instruction document](system-prompt/UPGRADING.md) for future instances based on what it learned.
 
-I even created [SafeClaw](https://github.com/ykdojo/safeclaw) to make running containerized Claude Code sessions easy. It lets you spin up multiple isolated sessions, each with a web terminal, and manage them all from a dashboard. It uses several customizations from this repo, including the optimized system prompt, [DX plugin](#tip-44-install-the-dx-plugin), and status line.
+I even created [SafeClaw](https://github.com/ykdojo/safeclaw) to make running containerized Claude Code sessions easy. It lets you spin up multiple isolated sessions, each with a web terminal, and manage them all from a dashboard. It uses several customizations from this repo, including the optimized system prompt, [DX plugin](#tip-44-install-the-dx-plugin), and [status line](#tip-0-customize-your-status-line).
 
 ### Advanced: Orchestrating a worker Claude Code in a container
 
