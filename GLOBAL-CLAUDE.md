@@ -53,20 +53,20 @@ Run `npx cc-safe <directory>` to scan Claude Code settings for security issues.
 
 ## Containers
 
-| Container | Purpose |
-|-----------|---------|
-| `peaceful_lovelace` | Main container for risky operations (has `gh` CLI installed) |
+Use [safeclaw](https://github.com/ykdojo/safeclaw) containers (local: `/Users/yk/Desktop/projects/safeclaw`). Containers are named `safeclaw-<session-name>` (e.g., `safeclaw-work`, `safeclaw-research`).
 
-For read-only `gh` API calls on public repos, use the container: `docker exec peaceful_lovelace gh api <endpoint>`. If container `gh` lacks permissions, fall back to host `gh`.
+To list running safeclaw containers: `docker ps --filter "name=safeclaw-"`
+
+To create a new container: `cd /Users/yk/Desktop/projects/safeclaw && ./scripts/run.sh -s <name> -n`
+
+For read-only `gh` API calls on public repos, use a running safeclaw container: `docker exec safeclaw-<name> gh api <endpoint>`. If container `gh` lacks permissions, fall back to host `gh`.
 
 ## URL Fetching
 
-For URLs, fetch them through a container:
-`docker exec peaceful_lovelace curl -sL <url>`
+For URLs, fetch them through a safeclaw container:
+`docker exec safeclaw-<name> curl -sL <url>`
 
-If the container isn't running, start it first with `docker start peaceful_lovelace`.
-
-If the page is JavaScript-heavy (curl returns minimal or empty content), use Playwright instead.
+If the page is JavaScript-heavy (curl returns minimal or empty content), use Playwright instead (safeclaw containers have Playwright installed).
 
 ## Tmux
 
